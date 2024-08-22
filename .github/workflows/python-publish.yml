@@ -1,0 +1,71 @@
+#48384050# This workflow will upload a Python Package using Twine when a release is created
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+  import random
+print("Benim yazı mı tura mı oynuna hoş geldin!")
+print("Hangisini kullanayım?")
+sistem = input("""
+1. random.random()
+2. random.randint()\n""")
+if sistem != 1 or sistem != 2:
+  print("Yanlış seçim yaptın ya 1 ya 2!")
+elif sistem == "1":
+    yatu = input("Yazı mı tura mı?\n").lower()
+    random_yazan = random.random() * 2
+    if random_yazan <= 1:
+        yazn = "yazı"
+    else:
+        yazn = "tura"
+
+    if yatu == yazn:
+        print("Kazandın!")
+    else:
+        print("Kaybettin!")
+elif sistem == "2":
+  yatu = input("Yazı mı tura mı?\n").lower()
+  random_yazan = random.randint(1,2)
+  if random_yazan <= 1:
+      yazn = "yazı"
+  else:
+      yazn = "tura"
+
+  if yatu == yazn:
+      print("Kazandın!")
+  else:
+      print("Kaybettin!")
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+    - name: Build package
+      run: python -m build
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
